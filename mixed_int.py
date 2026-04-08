@@ -13,8 +13,8 @@ c_sum = c_sum*-1
 # Define Constraints 
 A = np.array([c[0][0], c[0][1], c[0][2], c[0][3], c[0][4], c[0][5], c[0][6], c[0][7], c[0][8], c[0][9], c[0][10], c[0][11], c[0][12], c[0][13], c[0][14]]) # Space Request for each place (will eventually be multiplied by the bool array)
 
-b_l = np.array([0])
-b_u = np.array([6000])
+b_l = np.array([0]) # lower limit of 0 ft of soace used
+b_u = np.array([6000]) # max limit of space that can be used 6000 ft
 
 constraints = LinearConstraint(A, b_l, b_u)
 
@@ -38,8 +38,8 @@ def print_results():
     for x in range(15):
         if res.x[x] == 1:
             print(names[x], " - Space Requested: ", c[0][x], ", Bid: ", c[1][x], ", Total Bid: ", c_sum[x])
-            total_space = total_space + c[0][x]
-            total_profit = total_profit + c_sum[x]
+            total_space += c[0][x]
+            total_profit += c_sum[x]
     
     print("\nTotal space used = ", total_space, " ft^3. Which leaves ", 6000 - total_space, "ft^3 unused.")
     print("Total profit for ONU = $", total_profit, ".")
