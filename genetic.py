@@ -40,7 +40,7 @@ class MyProblem(ElementwiseProblem):
 
 problem = MyProblem()
 
-method = GA(pop_size=100,
+method = GA(pop_size=20,
             sampling=IntegerRandomSampling(),
             crossover=SBX(prob=1.0, eta=3.0, vtype=int, repair=RoundingRepair()),
             mutation=PM(prob=1.0, eta=3.0, vtype=int, repair=RoundingRepair()),
@@ -49,7 +49,7 @@ method = GA(pop_size=100,
 
 res = minimize(problem,
                method,
-               termination=('n_gen', 10000),
+               termination=('n_gen', 40),
                seed=1,
                save_history=True
                )
