@@ -19,7 +19,7 @@ c_total_bid = np.array([5400, 15500, 9180, 10560, 13650, 6120, 8800, 6580, 11800
 class MyProblem(ElementwiseProblem):
 
     def __init__(self):
-        super().__init__(n_var=15, n_obj=1, n_ieq_constr=0, xl=0, xu=1, vtype=int)
+        super().__init__(n_var=15, n_obj=1, n_ieq_constr=1, xl=0, xu=1, vtype=int)
 
     def _evaluate(self, x, out, *args, **kwargs):
         
@@ -34,15 +34,15 @@ class MyProblem(ElementwiseProblem):
         #x = x*c_total_bid
 
         out["F"] = np.sum(total_bid).reshape(-1,1) #-np.sum(x).reshape(-1, 1)#total_bid
-        out["G"] = np.sum(space_used).reshape(-1,1) - max_space#space_used - max_space
+        out["G"] = np.sum(space_used) - max_space#space_used - max_space
 
 
 problem = MyProblem()
 
 method = GA(pop_size=20,
             sampling=IntegerRandomSampling(),
-            crossover=SBX(prob=1.0, eta=3.0, vtype=int),
-            mutation=PM(prob=1.0, eta=3.0, vtype=int),
+            crossover=SBX(prob=1.0, eta=3.0, vtype=int, repair=RoundingRepair()),
+            mutation=PM(prob=1.0, eta=3.0, vtype=int, repair=RoundingRepair()),
             eliminate_duplicates=True,
             )
 
