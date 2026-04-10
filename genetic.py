@@ -11,11 +11,16 @@ from pymoo.operators.repair.rounding import RoundingRepair
 from pymoo.operators.sampling.rnd import IntegerRandomSampling
 from pymoo.optimize import minimize
 
+from timeit import default_timer as timer
+
+start = timer()
+
 c_space = np.array([1200, 2500, 1800, 2200, 3500, 900, 1600, 1400, 2000, 2800, 1100, 1900, 1000, 3200, 2100]) # space requested
 c_bid = ([4.5, 6.2, 5.1, 4.8, 3.9, 6.8, 5.5, 4.7, 5.9, 4.2, 5, 5.4, 4.6, 6, 4.9]) # Bid
 c_total_bid = np.array([5400, 15500, 9180, 10560, 13650, 6120, 8800, 6580, 11800, 11760, 5500, 10260, 4600, 19200, 10290,]) # Total Bid (Bid x space)
 b_names = np.array(["Polar Brew Coffee", "Tech Haven", "Green Leaf Market", "Campus Books & Co.", "FitZone Gym", "Byte Repair", "Urban Threads", "Clyde's Photo, Ada", "GameSphere", "Serenity Spa", "QuickPrint Center", "EcoHome Goods", "Smoothie Spot", "VR Arena", "Study Lounge Café"])
 
+#start = timer()
 
 class MyProblem(ElementwiseProblem):
 
@@ -44,7 +49,7 @@ method = GA(pop_size=20,
             sampling=IntegerRandomSampling(),
             crossover=SBX(prob=1.0, eta=3.0, vtype=int, repair=RoundingRepair()),
             mutation=PM(prob=1.0, eta=3.0, vtype=int, repair=RoundingRepair()),
-            eliminate_duplicates=False,
+            eliminate_duplicates=True,
             )
 
 res = minimize(problem,
@@ -71,3 +76,6 @@ for i in range(15):
 
 print("\nTotal space used = ", total_space, " ft^3. Which leaves ", 6000 - total_space, "ft^3 unused.")
 print("Total profit for ONU = $", total_profit, ".")
+
+end = timer()
+print("Time to run: ", end - start)

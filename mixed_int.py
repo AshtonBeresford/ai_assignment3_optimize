@@ -2,6 +2,8 @@
 from scipy.optimize import LinearConstraint
 from scipy.optimize import milp
 import numpy as np
+import timeit
+from timeit import default_timer as timer
 
 # Define Objective 
 c = np.array([[1200, 2500, 1800, 2200, 3500, 900, 1600, 1400, 2000, 2800, 1100, 1900, 1000, 3200, 2100], [4.5, 6.2, 5.1, 4.8, 3.9, 6.8, 5.5, 4.7, 5.9, 4.2, 5, 5.4, 4.6, 6, 4.9]]) # Space Requested-first row, Bid-second row 
@@ -21,7 +23,6 @@ constraints = LinearConstraint(A, b_l, b_u)
 # Tells the solver to use integers
 integrality = np.full(15,1) # makes all the 15 x values that wil be multiplied by the c values boolean (2)
 bounds = np.array([np.full(15, 0), np.full(15, 1)]) 
-#print(bounds)
 
 res = milp(c=c_sum, constraints=constraints, integrality=integrality, bounds=bounds)
 print(res)
@@ -43,4 +44,9 @@ def print_results():
     
     print("\nTotal space used = ", total_space, " ft^3. Which leaves ", 6000 - total_space, "ft^3 unused.")
     print("Total profit for ONU = $", total_profit, ".")
+
+start = timer()
 print_results()
+end = timer()
+
+print("Time to run: ", end - start)
